@@ -1,0 +1,15 @@
+# Build artifacts
+**/bin/
+**/obj/
+
+# User-specific files
+**/*.user
+**/*.suo
+
+# Local DB files
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+*.log
