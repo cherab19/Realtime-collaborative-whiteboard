@@ -125,14 +125,14 @@ public class SessionsController(ISessionService sessionService, ILogger<Sessions
 }
 
 public record CreateWhiteboardSessionRequest(
-    [property: Required, StringLength(120, MinimumLength = 3)] string Name,
-    [property: StringLength(300)] string? Description);
+    [Required, StringLength(120, MinimumLength = 3)] string Name,
+    [StringLength(300)] string? Description);
 
 public record UpdateWhiteboardSessionRequest(
-    [property: Required, StringLength(120, MinimumLength = 3)] string Name,
-    [property: StringLength(300)] string? Description,
+    [Required, StringLength(120, MinimumLength = 3)] string Name,
+    [StringLength(300)] string? Description,
     bool IsActive,
-    [property: Range(0, int.MaxValue)] int ActiveUsers);
+    [Range(0, int.MaxValue)] int ActiveUsers);
 
 public record WhiteboardSessionResponse(
     int Id,
