@@ -1,31 +1,161 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
+/* General Styles */
 body {
-  margin-bottom: 60px;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #1e1e1e;
+    overflow: hidden; /* Prevent scrolling for full screen canvas */
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+/* Whiteboard Container */
+#whiteboard-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1; /* Below the toolbars */
+    overflow: hidden;
+    background-color: #f8f9fa;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+#whiteboard {
+    display: block;
+    cursor: crosshair;
+    background: transparent;
+    width: 100%;
+    height: 100%;
+}
+
+/* Floating Panels */
+.floating-panel {
+    position: absolute;
+    z-index: 10;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 10px;
+}
+
+.panel-top-left {
+    top: 20px;
+    left: 20px;
+}
+
+.panel-top-center {
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px;
+    border-radius: 14px;
+}
+
+.panel-top-right {
+    top: 20px;
+    right: 20px;
+}
+
+.logo-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    color: #1e1e1e;
+}
+
+/* Toolbar Tools */
+.toolbar-tools {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.btn-tool {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    border-radius: 10px;
+    color: #4a4a4a;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-tool:hover {
+    background: #f1f3f5;
+    color: #1e1e1e;
+}
+
+.btn-tool.active {
+    background: #e7f5ff;
+    color: #1c7ed6;
+}
+
+/* Properties Panel */
+.properties-tools {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.prop-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.prop-group label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #868e96;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.color-swatch {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    overflow: hidden;
+    background: none;
+}
+
+.color-swatch::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.color-swatch::-webkit-color-swatch {
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+}
+
+/* Status Indicators */
+#connection-status {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+.status-online { background: #ebfbee; color: #2b8a3e; }
+.status-offline { background: #fff5f5; color: #c92a2a; }
+
+/* Text Tool Input Overlay */
+.canvas-text-input {
+    background: transparent;
+    border: 1px dashed #1c7ed6;
+    padding: 4px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(28, 126, 214, 0.2);
+    min-width: 150px;
+    position: absolute;
+    transform: translate(0, -50%);
 }

@@ -1,0 +1,34 @@
+# Integration Guide: Connecting Everything
+
+This guide explains how the Backend, Database, and Frontend communicate to create a seamless real-time experience.
+
+## 🔗 1. REST API Integration (Management)
+The frontend uses standard HTTP requests to manage sessions.
+- **Workflow**:
+    1. Frontend calls `GET /api/sessions` to list available whiteboards.
+    2. User clicks "Create Session" -> Frontend sends `POST /api/sessions`.
+    3. The Backend saves the session to **SQLite** and returns the new Session ID.
+
+## ⚡ 2. SignalR Integration (Real-Time)
+This is where the "Collaborative" part happens.
+- **Connection**: When a user enters a whiteboard room, the frontend establishes a persistent connection to the `WhiteboardHub`.
+- **Groups**: Each Session ID acts as a "Group" in SignalR. Users only receive drawing data for the room they are currently in.
+- **Broadcasting**:
+    - User A draws -> `hubConnection.invoke("Draw", data)`.
+    - Server Hub -> `Clients.Group(sessionId).SendAsync("ReceiveDraw", data)`.
+    - User B's browser -> `hubConnection.on("ReceiveDraw", ...)` and renders to canvas.
+
+## 💾 3. Persistence Integration (History)
+To ensure that drawing isn't lost if someone refreshes the page:
+1.  As users draw, the Hub saves the points into the `DrawingLogs` table in the database.
+2.  When a new user joins a session, the backend fetches all `DrawingLogs` for that session.
+3.  The frontend receives this history and "replays" the drawing on the canvas so it matches everyone else's.
+
+---
+
+## 🛠️ Typical Development Workflow
+1.  **Modify Model**: Update a class in `/Models`.
+2.  **Migrate**: Run `dotnet ef migrations add ...` and `dotnet ef database update`.
+3.  **Update Service**: Ensure the new data is handled in the `SessionService`.
+4.  **Expose via Hub/API**: Add methods to the Hub or Controller.
+5.  **Consume in Frontend**: Update the JavaScript code to use the new data.
