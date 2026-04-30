@@ -4,7 +4,7 @@
 - ASP.NET Core Web Application (.NET 10)
 - Entity Framework Core
 - SQLite
-- SignalR (to be added in Phase 2)
+- SignalR (implemented in Phase 2)
 - HTML5 Canvas UI (to be added in Phase 3)
 
 ## Current Progress
@@ -16,11 +16,19 @@ Phase 1 completed:
 - Session CRUD APIs implemented with service layer
 - Input validation and server-side error handling baseline added
 
+Phase 2 completed:
+- SignalR hub implemented for real-time drawing synchronization
+- Drawing events broadcast to session groups
+- Session join/leave with user notifications
+- Canvas clear functionality with history persistence
+- Connect/disconnect lifecycle logging
+- CORS configured for hub and API clients
+
 ## Project Structure
 - RealtimeWhiteboard/Controllers
 - RealtimeWhiteboard/Models
 - RealtimeWhiteboard/Data
-- RealtimeWhiteboard/Hubs (planned in Phase 2)
+- RealtimeWhiteboard/Hubs (completed in Phase 2)
 - RealtimeWhiteboard/Services
 - RealtimeWhiteboard/wwwroot
 
@@ -35,12 +43,32 @@ API base URL (development):
 
 Swagger UI is enabled in development for API testing.
 
+SignalR Hub URL (development):
+- ws://localhost:xxxx/whiteboardHub
+
 ## Implemented API Endpoints (Phase 1)
 - GET /api/sessions
 - GET /api/sessions/{id}
 - POST /api/sessions
 - PUT /api/sessions/{id}
 - DELETE /api/sessions/{id}
+
+## SignalR Hub Methods (Phase 2)
+
+Hub URL: `/whiteboardHub`
+
+**Server-to-Client methods (invoked by frontend):**
+- `JoinSession(int sessionId, string userDisplayName)` - User joins a session
+- `LeaveSession(int sessionId, string userDisplayName)` - User leaves a session
+- `SendDrawing(int sessionId, DrawingEventDto drawingEvent)` - Broadcast drawing
+- `ClearCanvas(int sessionId)` - Clear canvas and remove history
+
+**Client-to-Server events (received by frontend):**
+- `LoadHistory` - Drawing history for session
+- `UserJoined` - Notification when user joins
+- `UserLeft` - Notification when user leaves
+- `ReceiveDrawing` - Remote drawing event
+- `CanvasCleared` - Canvas was cleared
 
 ## Remote Team Guide For Remaining Phases (Phase 2-5)
 
@@ -120,22 +148,15 @@ Bad examples:
 #### Phase 2: SignalR Real-Time Infrastructure
 Owner: `signalr-dev`
 
-Deliverables:
-- Create `WhiteboardHub` in `RealtimeWhiteboard/Hubs`
-- Support events for:
-	- send drawing data
-	- receive/broadcast drawing updates
-	- join session group
-	- leave session group
-	- handle connect/disconnect
+**Status: COMPLETED**
 
-Definition of done:
-- Two or more clients in same session receive drawing updates instantly.
-
-#### Phase 3: Canvas UI And Drawing Tools
-Owner: `frontend-dev`
-
-Deliverables:
+Deliverables (all completed):
+- `WhiteboardHub` created in `RealtimeWhiteboard/Hubs`
+- Drawing sync: `SendDrawing` broadcasts to session group
+- Session events: `JoinSession` and `LeaveSession` with user notifications
+- Lifecycle: `OnConnectedAsync` and `OnDisconnectedAsync` logging
+- Canvas clear: `ClearCanvas` with history persistence
+- Connection state: CORS configured for hub clients
 - Responsive HTML5 canvas UI
 - Tools: freehand, line, rectangle
 - Color picker and brush size selector
@@ -197,4 +218,5 @@ From repository root:
 
 ### Current Status Summary
 - Phase 1: Completed and pushed.
-- Phase 2-5: Pending; must be implemented according to this guide.
+- Phase 2: Completed and ready for push.
+- Phase 3-5: Pending; must be implemented according to this guide.
