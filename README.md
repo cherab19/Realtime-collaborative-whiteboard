@@ -157,6 +157,14 @@ Deliverables (all completed):
 - Lifecycle: `OnConnectedAsync` and `OnDisconnectedAsync` logging
 - Canvas clear: `ClearCanvas` with history persistence
 - Connection state: CORS configured for hub clients
+
+Definition of done:
+	- Two or more clients in same session receive drawing updates instantly.
+
+#### Phase 3: Canvas UI And Drawing Tools
+Owner: `frontend-dev`
+
+Deliverables:
 - Responsive HTML5 canvas UI
 - Tools: freehand, line, rectangle
 - Color picker and brush size selector
