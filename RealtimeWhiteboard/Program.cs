@@ -1,12 +1,25 @@
 using Microsoft.EntityFrameworkCore;
 using RealtimeWhiteboard.Data;
 using RealtimeWhiteboard.Services;
+using RealtimeWhiteboard.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
+
+// Add CORS for SignalR and API requests
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddSignalR();
 
 
@@ -54,6 +67,8 @@ app.UseExceptionHandler(exceptionHandlerApp =>
 });
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseRouting();
 
